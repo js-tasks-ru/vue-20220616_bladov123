@@ -26,12 +26,6 @@ let RootComponent = defineComponent({
       return '';
     },
   },
-
-  methods: {
-    increaseCount() {
-      this.count++;
-    },
-  },
 });
 
 let app = createApp(RootComponent);
