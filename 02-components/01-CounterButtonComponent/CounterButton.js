@@ -6,15 +6,18 @@ export default defineComponent({
   props: {
     count: {
       type: Number,
+      default: 0,
       required: true,
     },
   },
-  emits: ['increasCount'],
+
+  emits: ['update:count'],
 
   template: `
       <button
          type="button"
-         @click='$emit("increasCount")'
+         :value="count"
+         @click='$emit("update:count", +$event.target.value + 1)'
       >
         {{ count }}
       </button>`,
