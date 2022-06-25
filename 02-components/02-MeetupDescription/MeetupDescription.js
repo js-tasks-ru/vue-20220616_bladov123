@@ -6,7 +6,7 @@ export default defineComponent({
     description: {
       type: String,
       required: false,
-    }
+    },
   },
 
   template: `<p class="meetup-description"> {{ description }} </p>`,
