@@ -24,25 +24,22 @@ export default defineComponent({
     return {
       currentMeetupId: null,
       isLoaded: false,
-      loading: true,
+      isError: false,
       errorMess: null,
     };
   },
 
   watch: {
     meetupId() {
-      this.loading = true;
       this.isLoaded = false;
-
+      this.isError = false;
       fetchMeetupById(this.meetupId)
         .then((met) => {
-          this.loading = false;
           this.isLoaded = true;
           this.currentMeetupId = met;
         })
         .catch((err) => {
-          this.loading = false;
-          this.isLoaded = false;
+          this.isError = true;
           this.errorMess = err.message;
         });
     },
@@ -51,11 +48,13 @@ export default defineComponent({
   created() {
     fetchMeetupById(this.meetupId)
       .then((met) => {
-        this.loading = false;
         this.isLoaded = true;
         this.currentMeetupId = met;
       })
-      .catch((err) => (this.errorMess = err.message));
+      .catch((err) => {
+        this.isError = true;
+        this.errorMess = err.message;
+      });
   },
 
   template: `
@@ -67,12 +66,12 @@ export default defineComponent({
             >
       </meetup-view>
 
-      <ui-container v-else-if="loading">
-        <ui-alert>Загрузка...</ui-alert>
+      <ui-container v-else-if="isError">
+        <ui-alert > {{ errorMess }}</ui-alert>
       </ui-container>
 
       <ui-container v-else>
-        <ui-alert > {{ errorMess }}</ui-alert>
+        <ui-alert>Загрузка...</ui-alert>
       </ui-container>
     </div>`,
 });
