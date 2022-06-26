@@ -21,39 +21,16 @@ export default defineComponent({
   },
 
   computed: {
-    dataEvent() {
-      let ruDate = new Date(this.date).toLocaleDateString();
-
-      if (ruDate.startsWith('0')) {
-        ruDate = ruDate.slice(1);
-      }
-
-      ruDate = ruDate.split('.');
-
-      const mounth = {
-        12: 'December',
-        '01': 'January',
-        '02': 'February',
-        '03': 'March',
-        '04': 'April',
-        '05': 'May',
-        '06': 'June',
-        '07': 'July',
-        '08': 'August',
-        '09': 'September',
-        10: 'October',
-        11: 'November',
-      };
-      ruDate.splice(1, 1, mounth[ruDate[1]]);
-
-      [ruDate[0], ruDate[1]] = [ruDate[1], ruDate[0]];
-
-      ruDate[1] += ',';
-      return ruDate.join(' ') + ' г.';
+    dateTimeNumer() {
+      return new Date(this.date).toISOString().split('T')[0];
     },
 
-    dateTimeNumer() {
-      return new Date(this.date).toLocaleDateString().split('.').reverse().join('-');
+    localDate() {
+      return new Date(this.date).toLocaleString(navigator.language, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
     },
   },
 
@@ -69,7 +46,7 @@ export default defineComponent({
       </li>
       <li>
         <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time :datetime="dateTimeNumer">{{ dataEvent }}</time>
+        <time :datetime="dateTimeNumer">{{ localDate }}</time>
       </li>
     </ul>`,
 });
