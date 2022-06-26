@@ -59,7 +59,6 @@ export default defineComponent({
 
   template: `
     <div class="page-meetup">
-      <!-- meetup view -->
       <meetup-view
             v-if="isLoaded"
             :meetup="currentMeetupId"
