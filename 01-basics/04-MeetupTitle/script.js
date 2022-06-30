@@ -1,7 +1,6 @@
 import { createApp } from './vendor/vue.esm-browser.js';
 import { defineComponent } from './vendor/vue.esm-browser.js';
 
-
 const API_URL = 'https://course-vue.javascript.ru/api';
 
 function fetchMeetupById(meetupId) {

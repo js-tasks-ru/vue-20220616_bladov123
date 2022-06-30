@@ -5,7 +5,7 @@
     <p><button @click="selectedType = 'registration'">Set registration</button></p>
     <p><button @click="updateOptions">Remove last option</button></p>
     <p>
-      <ui-dropdown v-model="selectedType" :options="agendaItemTypes" title="Событие" />
+      <ui-dropdown v-model="selectedType" :options="agendaItemTypes" title="Событие"/>
     </p>
 
     <h2>Without icons</h2>

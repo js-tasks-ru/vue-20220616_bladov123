@@ -30,31 +30,22 @@ export default defineComponent({
   },
 
   watch: {
-    meetupId() {
-      this.isLoaded = false;
-      this.isError = false;
-      fetchMeetupById(this.meetupId)
-        .then((met) => {
-          this.isLoaded = true;
-          this.currentMeetupId = met;
-        })
-        .catch((err) => {
-          this.isError = true;
-          this.errorMess = err.message;
-        });
+    meetupId: {
+      handler: function () {
+        this.isLoaded = false;
+        this.isError = false;
+        fetchMeetupById(this.meetupId)
+          .then((met) => {
+            this.isLoaded = true;
+            this.currentMeetupId = met;
+          })
+          .catch((err) => {
+            this.isError = true;
+            this.errorMess = err.message;
+          });
+      },
+      immediate: true,
     },
-  },
-
-  created() {
-    fetchMeetupById(this.meetupId)
-      .then((met) => {
-        this.isLoaded = true;
-        this.currentMeetupId = met;
-      })
-      .catch((err) => {
-        this.isError = true;
-        this.errorMess = err.message;
-      });
   },
 
   template: `

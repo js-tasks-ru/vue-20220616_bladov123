@@ -17,7 +17,7 @@
     <hr />
 
     <div>
-      <ui-form-group inline>
+      <ui-form-group inline label="Label Text">
         <div class="input-group">
           <input class="form-control" placeholder="Inline" />
         </div>
