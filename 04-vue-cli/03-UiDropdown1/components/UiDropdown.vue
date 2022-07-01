@@ -22,15 +22,18 @@
     </div>
   </div>
 
-  <select v-show="false" v-model="modelValue">
+  <!--
+  toDo привязать значение модели без мутации . вычисляемое св-во?
+
+  <select v-show="true" @change="$emit('update:modelValue', $event.target.value)">
     <option
       v-for="(item, index) in options"
       :key="index"
       :value="item.value"
-      @change="$emit('update:modelValue', item.value)"
     >
+      {{ item.text }}
     </option>
-  </select>
+  </select> -->
 </template>
 
 <script>

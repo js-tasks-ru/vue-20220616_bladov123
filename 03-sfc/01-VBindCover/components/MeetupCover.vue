@@ -5,8 +5,12 @@
 </template>
 
 <script>
+const defaultCover = `var(--default-cover)`;
+
 export default {
   name: 'MeetupCover',
+
+  defaultCover,
 
   props: {
     title: {
@@ -22,9 +26,9 @@ export default {
   },
 
   data() {
-    return {
-      defaultCover: `var(--default-cover)`,
-    };
+    // return {
+    //   defaultCover: `var(--default-cover)`,
+    // };
   },
 
   computed: {
