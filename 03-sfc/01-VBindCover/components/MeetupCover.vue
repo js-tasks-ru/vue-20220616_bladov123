@@ -5,12 +5,12 @@
 </template>
 
 <script>
-const defaultCover = `var(--default-cover)`;
+const defaultCover = 'var(--default-cover)';
 
 export default {
   name: 'MeetupCover',
 
-  defaultCover,
+  defaultCover: defaultCover,
 
   props: {
     title: {
@@ -25,19 +25,13 @@ export default {
     },
   },
 
-  data() {
-    // return {
-    //   defaultCover: `var(--default-cover)`,
-    // };
-  },
-
   computed: {
     backgroundImage() {
       if (this.image) {
         return `url('${this.image}')`;
       }
 
-      return this.defaultCover;
+      return this.$options.defaultCover;
     },
   },
 };
