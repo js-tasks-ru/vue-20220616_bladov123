@@ -64,7 +64,7 @@ export default {
           let [hours, minute] = value.split(':');
           milisec = (+hours * 60 + +minute) * 60 * 1000;
         } else {
-          milisec = DateTime.fromISO(value).toMillis() + 10800000;
+          milisec = DateTime.fromISO(value).toMillis();
         }
 
         this.$emit('update:modelValue', milisec);
