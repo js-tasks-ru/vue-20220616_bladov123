@@ -1,8 +1,17 @@
 <template>
   <div class="image-uploader">
-    <label class="image-uploader__preview image-uploader__preview-loading" style="--bg-url: url('/link.jpeg')">
-      <span class="image-uploader__text">Загрузить изображение</span>
-      <input type="file" accept="image/*" class="image-uploader__input" />
+    <label class="image-uploader__preview" :class="{ 'image-uploader__preview-loading': loading }" :style="imgObj">
+      <span class="image-uploader__text"> {{ currentText }}</span>
+      <input
+        v-bind="$attrs"
+        ref="input"
+        type="file"
+        accept="image/*"
+        class="image-uploader__input"
+        @change="selectEmit"
+        @click="remove"
+        :disabled="loading"
+      />
     </label>
   </div>
 </template>
@@ -10,6 +19,90 @@
 <script>
 export default {
   name: 'UiImageUploader',
+
+  inheritAttrs: false,
+
+  props: {
+    preview: {
+      required: false,
+    },
+
+    uploader: {
+      type: Function,
+    },
+  },
+
+  emits: ['select', 'upload', 'error', 'remove'],
+
+  data() {
+    return {
+      loading: false,
+      loaded: false,
+      selectedImg: this.preview,
+      prevImg: null,
+      isPreviw: this.preview,
+    };
+  },
+
+  computed: {
+    imgObj() {
+      if (!this.selectedImg || !this.preview) return new Object();
+
+      return {
+        '--bg-url': `url('${this.selectedImg}')`,
+      };
+    },
+
+    currentText() {
+      if (this.loading) return 'Загрузка...';
+
+      if (this.loaded || this.isPreviw) return 'Удалить изображение.';
+
+      return 'Загрузить изображение';
+    },
+  },
+
+  methods: {
+    async selectEmit(e) {
+      this.loading = true;
+      let file = this.$refs['input'].files[0];
+
+      this.$emit('select', file);
+
+      if (this.uploader) {
+        try {
+          let response = await this.uploader(file);
+          this.$emit('upload', response);
+          this.selectedImg = response.image;
+          this.prevImg = response.image;
+          this.loading = false;
+          this.loaded = true;
+
+          return;
+        } catch (error) {
+          this.$emit('error', error);
+          this.$refs['input'].value = '';
+          this.loading = false;
+
+          if (this.prevImg) {
+            this.selectedImg = this.prevImg;
+          }
+
+          return;
+        }
+      }
+
+      this.loading = false;
+      this.loaded = true;
+    },
+
+    remove(e) {
+      this.isPreviw = false;
+      this.loaded = false;
+      this.$refs['input'].value = '';
+      this.$emit('remove');
+    },
+  },
 };
 </script>
 
