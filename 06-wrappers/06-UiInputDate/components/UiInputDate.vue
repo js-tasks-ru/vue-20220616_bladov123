@@ -1,5 +1,5 @@
 <template>
-  <ui-input v-bind="$attrs" :type="type" :value="modelValue" @change="proxyChange">
+  <ui-input v-bind="$attrs" :type="type" :value="proxyValue" @change="proxyChange">
     <template v-for="slotName in Object.keys($slots)" #[slotName]>
       <slot :name="slotName"></slot>
     </template>
@@ -8,7 +8,6 @@
 
 <script>
 import UiInput from './UiInput';
-import dayjs from 'dayjs';
 
 export default {
   name: 'UiInputDate',
@@ -25,17 +24,27 @@ export default {
 
     modelValue: {
       type: Number,
+      default: null,
     },
   },
 
   emits: ['update:modelValue'],
 
+  computed: {
+    proxyValue() {
+      if (this.type === 'date') {
+        const utcDate = new Date(this.modelValue);
+        const isoDate = utcDate.toISOString().split('T')[0];
+        return isoDate;
+      }
+      return this.modelValue;
+    },
+  },
+
   methods: {
     proxyChange($event) {
       let value = $event.target.valueAsNumber;
-      let valueTwo = $event.target.value;
 
-      let formatter = dayjs(value).format('YYYY-MM-DD')
       this.$emit('update:modelValue', value);
     },
   },
