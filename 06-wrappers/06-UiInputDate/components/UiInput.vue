@@ -15,7 +15,6 @@
       :is="multiline ? 'textarea' : 'input'"
       ref="input"
       class="form-control"
-      valueAsNumber
       :class="{
         'form-control_rounded': rounded,
         'form-control_sm': small,
