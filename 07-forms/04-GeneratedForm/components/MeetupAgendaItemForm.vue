@@ -32,7 +32,6 @@ import UiIcon from './UiIcon';
 import UiFormGroup from './UiFormGroup';
 import UiInput from './UiInput';
 import UiDropdown from './UiDropdown';
-
 const agendaItemTypeIcons = {
   registration: 'key',
   opening: 'cal-sm',
@@ -43,7 +42,6 @@ const agendaItemTypeIcons = {
   afterparty: 'cal-sm',
   other: 'cal-sm',
 };
-
 const agendaItemDefaultTitles = {
   registration: 'Регистрация',
   opening: 'Открытие',
@@ -54,19 +52,16 @@ const agendaItemDefaultTitles = {
   talk: 'Доклад',
   other: 'Другое',
 };
-
 const agendaItemTypeOptions = Object.entries(agendaItemDefaultTitles).map(([type, title]) => ({
   value: type,
   text: title,
   icon: agendaItemTypeIcons[type],
 }));
-
 const talkLanguageOptions = [
   { value: null, text: 'Не указано' },
   { value: 'RU', text: 'RU' },
   { value: 'EN', text: 'EN' },
 ];
-
 /**
  * @typedef FormItemSchema
  * @property {string} label
@@ -76,7 +71,6 @@ const talkLanguageOptions = [
 /** @typedef {string} AgendaItemField */
 /** @typedef {string} AgendaItemType */
 /** @typedef {Object.<AgendaItemType, FormItemSchema>} FormSchema */
-
 /** @type FormSchema */
 const commonAgendaItemFormSchema = {
   title: {
@@ -87,7 +81,6 @@ const commonAgendaItemFormSchema = {
     },
   },
 };
-
 /** @type {Object.<AgendaItemField, FormSchema>} */
 const agendaItemFormSchemas = {
   registration: commonAgendaItemFormSchema,
@@ -147,30 +140,23 @@ const agendaItemFormSchemas = {
     },
   },
 };
-
 export default {
   name: 'MeetupAgendaItemForm',
-
   components: { UiIcon, UiFormGroup, UiInput, UiDropdown },
-
   agendaItemTypeOptions,
   agendaItemFormSchemas,
-
   props: {
     agendaItem: {
       type: Object,
       required: true,
     },
   },
-
   emits: ['update:agendaItem', 'remove'],
-
   data() {
     return {
       localAgendaItem: { ...this.agendaItem },
     };
   },
-
   computed: {
     startsAt() {
       return this.localAgendaItem.startsAt;
@@ -179,7 +165,6 @@ export default {
       return agendaItemFormSchemas[this.localAgendaItem.type];
     },
   },
-
   watch: {
     localAgendaItem: {
       deep: true,
@@ -226,7 +211,6 @@ export default {
   position: relative;
   padding: 20px 10% 0 16px;
 }
-
 .agenda-item-form__remove-button {
   position: absolute;
   top: 4px;
@@ -239,49 +223,39 @@ export default {
   cursor: pointer;
   transition: 0.2s opacity;
 }
-
 .agenda-item-form__remove-button:hover {
   opacity: 0.6;
 }
-
 .agenda-item-form__row {
   display: flex;
   flex-direction: column;
 }
-
 .agenda-item-form__col + .agenda-item-form__col {
   margin-top: 16px;
 }
-
 .agenda-item-form__col:first-child {
   margin-left: 0;
 }
-
 @media all and (min-width: 992px) {
   .agenda-item-form {
     padding: 28px 25% 4px 24px;
   }
-
   .agenda-item-form__remove-button {
     top: 20px;
     right: 20px;
   }
-
   .agenda-item-form__row {
     flex-direction: row;
     justify-content: space-between;
     margin: 0 -12px;
   }
-
   .agenda-item-form__col {
     flex: 1 1 auto;
     padding: 0 12px;
   }
-
   .agenda-item-form__col + .agenda-item-form__col {
     margin-top: 0;
   }
-
   .agenda-item-form__col:first-child {
     margin-left: 0;
   }
