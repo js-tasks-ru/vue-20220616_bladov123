@@ -151,20 +151,38 @@ export default {
       required: true,
     },
   },
+<<<<<<< HEAD
   emits: ['update:agendaItem', 'remove'],
+=======
+
+  emits: ['update:agendaItem', 'remove'],
+
+>>>>>>> a97538931da26bd96fdd07c2e8d5de4a9727cc5b
   data() {
     return {
       localAgendaItem: { ...this.agendaItem },
     };
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> a97538931da26bd96fdd07c2e8d5de4a9727cc5b
   computed: {
     startsAt() {
       return this.localAgendaItem.startsAt;
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> a97538931da26bd96fdd07c2e8d5de4a9727cc5b
     schema() {
       return agendaItemFormSchemas[this.localAgendaItem.type];
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> a97538931da26bd96fdd07c2e8d5de4a9727cc5b
   watch: {
     localAgendaItem: {
       deep: true,
@@ -172,6 +190,10 @@ export default {
         this.$emit('update:agendaItem', { ...this.localAgendaItem });
       },
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> a97538931da26bd96fdd07c2e8d5de4a9727cc5b
     startsAt(newValue, oldValue) {
       // Если время не введено или введено не до конца, браузер вернёт пустую строку (при поддержке time)
       // Но Safari не поддерживает input[type=time] :(
