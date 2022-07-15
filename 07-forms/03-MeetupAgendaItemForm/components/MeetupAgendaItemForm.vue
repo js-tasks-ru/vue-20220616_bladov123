@@ -1,37 +1,70 @@
 <template>
   <fieldset class="agenda-item-form">
-    <button type="button" class="agenda-item-form__remove-button">
+    <button type="button" class="agenda-item-form__remove-button" @click="$emit('remove')">
       <ui-icon icon="trash" />
     </button>
 
     <ui-form-group>
-      <ui-dropdown title="Тип" :options="$options.agendaItemTypeOptions" name="type" />
+      <ui-dropdown
+        title="Тип"
+        :options="$options.agendaItemTypeOptions"
+        name="type"
+        :model-value="localAgenda.type"
+        @update:model-value="updatingValue($event, 'type')"
+      />
     </ui-form-group>
 
     <div class="agenda-item-form__row">
       <div class="agenda-item-form__col">
         <ui-form-group label="Начало">
-          <ui-input type="time" placeholder="00:00" name="startsAt" />
+          <ui-input
+            type="time"
+            placeholder="00:00"
+            name="startsAt"
+            :model-value="localAgenda.startsAt"
+            @update:model-value="updatingValue($event, 'startsAt')"
+          />
         </ui-form-group>
       </div>
       <div class="agenda-item-form__col">
         <ui-form-group label="Окончание">
-          <ui-input type="time" placeholder="00:00" name="endsAt" />
+          <ui-input
+            type="time"
+            placeholder="00:00"
+            name="endsAt"
+            :model-value="localAgenda.endsAt"
+            @update:model-value="updatingValue($event, 'endsAt')"
+          />
         </ui-form-group>
       </div>
     </div>
 
-    <ui-form-group label="Тема">
-      <ui-input name="title" />
+    <ui-form-group :label="label">
+      <ui-input name="title" :model-value="localAgenda.title" @update:model-value="updatingValue($event, 'title')" />
     </ui-form-group>
-    <ui-form-group label="Докладчик">
-      <ui-input name="speaker" />
+    <ui-form-group v-if="agendaType === 'talk'" label="Докладчик">
+      <ui-input
+        name="speaker"
+        :model-value="localAgenda.speaker"
+        @update:model-value="updatingValue($event, 'speaker')"
+      />
     </ui-form-group>
-    <ui-form-group label="Описание">
-      <ui-input multiline name="description" />
+    <ui-form-group v-if="agendaType === 'talk' || agendaType === 'other'" label="Описание">
+      <ui-input
+        multiline
+        name="description"
+        :model-value="localAgenda.description"
+        @update:model-value="updatingValue($event, 'description')"
+      />
     </ui-form-group>
-    <ui-form-group label="Язык">
-      <ui-dropdown title="Язык" :options="$options.talkLanguageOptions" name="language" />
+    <ui-form-group v-if="agendaType === 'talk'" label="Язык">
+      <ui-dropdown
+        title="Язык"
+        :options="$options.talkLanguageOptions"
+        name="language"
+        :model-value="localAgenda.language"
+        @update:model-value="updatingValue($event, 'language')"
+      />
     </ui-form-group>
   </fieldset>
 </template>
@@ -41,6 +74,8 @@ import UiIcon from './UiIcon';
 import UiFormGroup from './UiFormGroup';
 import UiInput from './UiInput';
 import UiDropdown from './UiDropdown';
+
+let difference = 0;
 
 const agendaItemTypeIcons = {
   registration: 'key',
@@ -88,6 +123,67 @@ export default {
     agendaItem: {
       type: Object,
       required: true,
+    },
+  },
+
+  emits: ['update:modelValue', 'remove', 'update:agendaItem'],
+
+  data() {
+    return {
+      localAgenda: { ...this.agendaItem },
+    };
+  },
+
+  computed: {
+    agendaType() {
+      return this.localAgenda.type;
+    },
+
+    startsAt() {
+      return this.localAgenda.startsAt;
+    },
+
+    label() {
+      if (this.localAgenda.type === 'talk') return 'Тема';
+
+      if (this.localAgenda.type === 'other') return 'Заголовок';
+
+      return 'Нестандартный текст (необязательно)';
+    },
+  },
+
+  watch: {
+    startsAt(newValue, oldValue) {
+      if (!/([0-1]\d|2[0-3]):[0-5]\d/.test(newValue)) {
+        return;
+      }
+
+      const timeToMinutes = (time) => {
+        const [h, m] = time.split(':').map((x) => parseInt(x, 10));
+        return h * 60 + m;
+      };
+      const newMinutes = timeToMinutes(newValue);
+      const oldMinutes = timeToMinutes(oldValue);
+      const oldEndsAtMinutes = timeToMinutes(this.localAgenda.endsAt);
+
+      const deltaMinutes = newMinutes - oldMinutes;
+
+      const newEndsAtMinutes = (oldEndsAtMinutes + deltaMinutes + 24 * 60) % (24 * 60);
+
+      const hours = Math.floor(newEndsAtMinutes / 60)
+        .toString()
+        .padStart(2, '0');
+      const minutes = Math.floor(newEndsAtMinutes % 60)
+        .toString()
+        .padStart(2, '0');
+      this.localAgenda.endsAt = `${hours}:${minutes}`;
+    },
+  },
+
+  methods: {
+    updatingValue(event, key) {
+      this.localAgenda[key] = event;
+      this.$emit('update:agendaItem', { ...this.localAgenda });
     },
   },
 };
