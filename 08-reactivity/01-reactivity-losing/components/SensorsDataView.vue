@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash-es';
 import { SensorsDataController } from '../services/SensorsDataController';
 import { SensorsDataStreamingService } from '../services/SensorsDataStreamingService';
 import SensorsDataRow from './SensorsDataRow';
@@ -27,7 +28,7 @@ export default {
 
     // Раз в секунду запрашиваем и выводим новые данные сенсоров
     setInterval(() => {
-      this.sensors = this.sensorsDataController.getData();
+      this.sensorsDataController.getData();
     }, 1000);
   },
 
@@ -42,7 +43,7 @@ export default {
     },
 
     setData(sensors) {
-      this.sensors = sensors;
+      this.sensors = cloneDeep(sensors);
     },
   },
 };
