@@ -27,12 +27,6 @@ export default {
     },
   },
 
-  data() {
-    return {
-      index: null,
-    };
-  },
-
   computed: {
     pages() {
       let lastElem = this.page * this.perPage;
