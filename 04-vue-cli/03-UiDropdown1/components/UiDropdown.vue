@@ -7,12 +7,12 @@
 
     <div v-show="opened" class="dropdown__menu" role="listbox">
       <button
+        v-for="(item, index) in options"
+        :key="index"
         class="dropdown__item"
         :class="{ dropdown__item_icon: withIcon }"
         role="option"
         type="button"
-        v-for="(item, index) in options"
-        :key="index"
         @click="$emit('update:modelValue', item.value)"
         @click.passive="toggleOpen"
       >
