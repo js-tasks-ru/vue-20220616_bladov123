@@ -1,7 +1,7 @@
 <template>
   <div class="pagination-container">
     <template v-for="n in perPage">
-      <slot :item="items[pages + n - 1]" />
+      <slot v-if="items[pages + n - 1]" :item="items[pages + n - 1]" />
     </template>
   </div>
 </template>
