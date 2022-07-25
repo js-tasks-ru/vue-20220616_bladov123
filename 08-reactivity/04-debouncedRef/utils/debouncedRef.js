@@ -10,9 +10,6 @@ import debounce from 'lodash/debounce';
 export function debouncedRef(source, wait) {
   let refVal = source.value;
   const debounced = ref(refVal);
-  // return debounced;
-
-  // const debounced = ref(source.value);
 
   let deb = debounce((val) => {
     debounced.value = val;

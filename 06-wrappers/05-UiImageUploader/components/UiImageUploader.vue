@@ -8,9 +8,9 @@
         type="file"
         accept="image/*"
         class="image-uploader__input"
+        :disabled="loading"
         @change="selectEmit"
         @click="remove"
-        :disabled="loading"
       />
     </label>
   </div>
